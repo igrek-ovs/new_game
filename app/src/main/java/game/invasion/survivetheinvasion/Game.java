@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat;
 
 public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private final Player player;
+    private final Joystick joystick;
     private GameLoop gameLoop;
     private Context context;
 
@@ -26,6 +27,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         //Initialize player
         player = new Player(getContext(), 400, 400, 50);
+
+        //Initialize joystick
+        joystick = new Joystick(275, 1200, 70, 40);
 
         setFocusable(true);
     }
@@ -51,6 +55,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         drawUPS(canvas);
         drawFPS(canvas);
         player.draw(canvas);
+        joystick.draw(canvas);
     }
 
     public void drawUPS(Canvas canvas) {
@@ -71,21 +76,29 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawText("FPS: " + averageFPS, 100, 100, paint);
     }
 
-    public void update(){
-    player.update();
+    public void update() {
+        joystick.update();
+        player.update(joystick);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
-        switch(event.getAction()){
+        switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                player.setPosition((double)event.getX(), (double)event.getY());
+                if (joystick.isPressed((double) event.getX(), (double) event.getY())) {
+                    joystick.setIsPressed(true);
+                }
                 return true;
             case MotionEvent.ACTION_MOVE:
-                player.setPosition((double)event.getX(), (double)event.getY());
+                if (joystick.getIsPressed()) {
+                    joystick.setActuator((double) event.getX(), (double) event.getY());
+                }
                 return true;
-
+            case MotionEvent.ACTION_UP:
+                joystick.setIsPressed(false);
+                joystick.resetActuator();
+                return true;
         }
 
         return super.onFilterTouchEventForSecurity(event);
