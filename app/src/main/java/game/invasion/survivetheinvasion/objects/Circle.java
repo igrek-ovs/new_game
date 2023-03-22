@@ -1,10 +1,8 @@
-package game.invasion.survivetheinvasion;
+package game.invasion.survivetheinvasion.objects;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-
-import androidx.core.content.ContextCompat;
 
 public abstract class Circle extends GameObject{
 
