@@ -10,15 +10,22 @@ import android.view.SurfaceView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import game.invasion.survivetheinvasion.objects.Circle;
 import game.invasion.survivetheinvasion.objects.Enemy;
 import game.invasion.survivetheinvasion.objects.Player;
 
 public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private final Player player;
     private final Joystick joystick;
-    private final Enemy enemy;
+    //private final Enemy enemy;
     private GameLoop gameLoop;
     private Context context;
+
+    private List<Enemy> enemyList = new ArrayList<Enemy>();
 
     public Game(Context context) {
         super(context);
@@ -34,7 +41,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         //Initialize joystick
         joystick = new Joystick(275, 1200, 70, 40);
         player = new Player(getContext(), joystick, 400, 400, 50);
-        enemy = new Enemy(getContext(), player, 1000, 1000, 30);
+        //enemy = new Enemy(getContext(), player, 1000, 1000, 30);
 
         setFocusable(true);
     }
@@ -61,7 +68,11 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         drawFPS(canvas);
         player.draw(canvas);
         joystick.draw(canvas);
-        enemy.draw(canvas);
+
+        for (Enemy enemy : enemyList) {
+            enemy.draw(canvas);
+        }
+
     }
 
     public void drawUPS(Canvas canvas) {
@@ -85,8 +96,22 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     public void update() {
         joystick.update();
         player.update();
-        enemy.update();
+        if (Enemy.readyToSpawn()) {
+            enemyList.add(new Enemy(getContext(), player));
+        }
+
+        for (Enemy enemy : enemyList) {
+            enemy.update();
+        }
+
+        Iterator<Enemy> iteratorEnemy = enemyList.iterator();
+        while (iteratorEnemy.hasNext()) {
+            if(Circle.isColliding(iteratorEnemy.next(), player)){
+                iteratorEnemy.remove();
+            }
+        }
     }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
