@@ -17,6 +17,7 @@ import java.util.List;
 import game.invasion.survivetheinvasion.objects.Circle;
 import game.invasion.survivetheinvasion.objects.Enemy;
 import game.invasion.survivetheinvasion.objects.Player;
+import game.invasion.survivetheinvasion.objects.Spell;
 
 public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private final Player player;
@@ -24,8 +25,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     //private final Enemy enemy;
     private GameLoop gameLoop;
     private Context context;
-
     private List<Enemy> enemyList = new ArrayList<Enemy>();
+    private List<Spell> spellList = new ArrayList<Spell>();
+    private int joystickPointerId = 0;
 
     public Game(Context context) {
         super(context);
@@ -39,7 +41,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
 
         //Initialize joystick
-        joystick = new Joystick(275, 1200, 70, 40);
+        joystick = new Joystick(275, 1000, 70, 40);
         player = new Player(getContext(), joystick, 400, 400, 50);
         //enemy = new Enemy(getContext(), player, 1000, 1000, 30);
 
@@ -73,6 +75,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
             enemy.draw(canvas);
         }
 
+        for (Spell spell : spellList) {
+            spell.draw(canvas);
+        }
+
     }
 
     public void drawUPS(Canvas canvas) {
@@ -104,10 +110,25 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
             enemy.update();
         }
 
+        for (Spell spell : spellList) {
+            spell.update();
+        }
+
         Iterator<Enemy> iteratorEnemy = enemyList.iterator();
         while (iteratorEnemy.hasNext()) {
-            if(Circle.isColliding(iteratorEnemy.next(), player)){
+            Circle enemy = iteratorEnemy.next();
+            if (Circle.isColliding(enemy, player)) {
                 iteratorEnemy.remove();
+                continue;
+            }
+
+            Iterator<Spell> iteratorSpell = spellList.iterator();
+            while (iteratorSpell.hasNext()) {
+                Circle spell = iteratorSpell.next();
+                if (Circle.isColliding(spell, enemy)) {
+                    iteratorSpell.remove();
+                    iteratorEnemy.remove();
+                }
             }
         }
     }
@@ -116,10 +137,16 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
-        switch (event.getAction()) {
+        switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
-                if (joystick.isPressed((double) event.getX(), (double) event.getY())) {
+            case MotionEvent.ACTION_POINTER_DOWN:
+                if (joystick.getIsPressed()) {
+                    spellList.add(new Spell(getContext(), player));
+                } else if (joystick.isPressed((double) event.getX(), (double) event.getY())) {
+                    joystickPointerId = event.getPointerId(event.getActionIndex());
                     joystick.setIsPressed(true);
+                } else {
+                    spellList.add(new Spell(getContext(), player));
                 }
                 return true;
             case MotionEvent.ACTION_MOVE:
@@ -128,8 +155,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 }
                 return true;
             case MotionEvent.ACTION_UP:
-                joystick.setIsPressed(false);
-                joystick.resetActuator();
+            case MotionEvent.ACTION_POINTER_UP:
+                if(joystickPointerId == event.getPointerId(event.getActionIndex())){
+                    joystick.setIsPressed(false);
+                    joystick.resetActuator();
+                }
+
                 return true;
         }
 

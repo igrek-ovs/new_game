@@ -85,10 +85,7 @@ public class Joystick {
     }
 
     public boolean isPressed(double touchPositionX, double touchPositionY) {
-        joystickCenterToTouchDistance = Math.sqrt(
-                Math.pow(outerCircleCenterPositionX - touchPositionX, 2) +
-                        Math.pow(outerCircleCenterPositionY - touchPositionY, 2)
-        );
+        joystickCenterToTouchDistance = Utils.getDistanceBetweenPoints(outerCircleCenterPositionX, outerCircleCenterPositionY, touchPositionX, touchPositionY);
         return joystickCenterToTouchDistance < outerCircleRadius;
     }
 

@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 import game.invasion.survivetheinvasion.GameLoop;
 import game.invasion.survivetheinvasion.Joystick;
 import game.invasion.survivetheinvasion.R;
+import game.invasion.survivetheinvasion.Utils;
 
 public class Player extends Circle {
     public static final double SPEED_PIXELS_PER_SECOND = 400.00;
@@ -23,6 +24,12 @@ public class Player extends Circle {
         velocityY = joystick.getActuatorY() * MAX_SPEED;
         positionX += velocityX;
         positionY += velocityY;
+
+        if (velocityX != 0 || velocityY != 0) {
+            double distance = Utils.getDistanceBetweenPoints(0, 0, velocityX, velocityY);
+            directionX = velocityX/distance;
+            directionY = velocityY/distance;
+        }
     }
 
     public void setPosition(double positionX, double positionY) {
