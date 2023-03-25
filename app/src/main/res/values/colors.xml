@@ -13,4 +13,5 @@
     <color name="spellColor">#320B61</color>
     <color name="healthBarBorder">#469CE1</color>
     <color name="healthBarColor">#87F85D</color>
+    <color name="gameOverColor">#7A0800</color>
 </resources>

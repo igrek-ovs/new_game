@@ -16,6 +16,7 @@ import java.util.List;
 
 import game.invasion.survivetheinvasion.objects.Circle;
 import game.invasion.survivetheinvasion.objects.Enemy;
+import game.invasion.survivetheinvasion.objects.GameOver;
 import game.invasion.survivetheinvasion.objects.Player;
 import game.invasion.survivetheinvasion.objects.Spell;
 
@@ -28,6 +29,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private List<Enemy> enemyList = new ArrayList<Enemy>();
     private List<Spell> spellList = new ArrayList<Spell>();
     private int joystickPointerId = 0;
+    private GameOver gameOver;
 
     public Game(Context context) {
         super(context);
@@ -44,6 +46,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         joystick = new Joystick(275, 1000, 70, 40);
         player = new Player(getContext(), joystick, 400, 400, 50);
         //enemy = new Enemy(getContext(), player, 1000, 1000, 30);
+
+        gameOver = new GameOver(getContext());
 
         setFocusable(true);
     }
@@ -79,6 +83,11 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
             spell.draw(canvas);
         }
 
+        if(player.getHealthPoints()<=0)
+        {
+            gameOver.draw(canvas);
+        }
+
     }
 
     public void drawUPS(Canvas canvas) {
@@ -100,6 +109,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update() {
+
+        if(player.getHealthPoints()<=0){
+            return;
+        }
         joystick.update();
         player.update();
         if (Enemy.readyToSpawn()) {

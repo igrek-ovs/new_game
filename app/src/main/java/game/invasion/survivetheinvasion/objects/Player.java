@@ -12,7 +12,7 @@ import game.invasion.survivetheinvasion.Utils;
 
 public class Player extends Circle {
     public static final double SPEED_PIXELS_PER_SECOND = 400.00;
-    public static final int MAX_HEALTH_POINTS = 10;
+    public static final int MAX_HEALTH_POINTS = 3;
     private static final double MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
     private final Joystick joystick;
     private HealthBar healthBar;
