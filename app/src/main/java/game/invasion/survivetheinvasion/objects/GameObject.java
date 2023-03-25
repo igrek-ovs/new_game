@@ -15,7 +15,7 @@ public abstract class GameObject {
         this.positionY = positionY;
     }
 
-    protected static double getDistanceBetweenObjects(GameObject obj1, GameObject obj2) {
+    public  static double getDistanceBetweenObjects(GameObject obj1, GameObject obj2) {
         return Math.sqrt(
                 Math.pow(obj2.getPositionX()-obj1.getPositionX(), 2) +
                         Math.pow(obj2.getPositionY()-obj1.getPositionY(), 2)
@@ -26,19 +26,19 @@ public abstract class GameObject {
 
     public abstract void update();
 
-    protected double getPositionX() {
+    public  double getPositionX() {
         return positionX;
     }
 
-    protected double getPositionY() {
+    public  double getPositionY() {
         return positionY;
     }
 
-    protected double getDirectionX() {
+    public  double getDirectionX() {
         return directionX;
     }
 
-    protected double getDirectionY() {
+    public  double getDirectionY() {
         return directionY;
     }
 }

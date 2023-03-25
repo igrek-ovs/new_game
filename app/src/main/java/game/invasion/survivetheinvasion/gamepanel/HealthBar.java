@@ -1,4 +1,4 @@
-package game.invasion.survivetheinvasion.objects;
+package game.invasion.survivetheinvasion.gamepanel;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import androidx.core.content.ContextCompat;
 
 import game.invasion.survivetheinvasion.R;
+import game.invasion.survivetheinvasion.objects.Player;
 
 public class HealthBar {
     private Player player;

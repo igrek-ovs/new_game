@@ -1,8 +1,10 @@
-package game.invasion.survivetheinvasion;
+package game.invasion.survivetheinvasion.gamepanel;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+
+import game.invasion.survivetheinvasion.Utils;
 
 public class Joystick {
 

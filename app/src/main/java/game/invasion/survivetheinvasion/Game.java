@@ -14,9 +14,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import game.invasion.survivetheinvasion.gamepanel.Joystick;
+import game.invasion.survivetheinvasion.gamepanel.Performance;
 import game.invasion.survivetheinvasion.objects.Circle;
 import game.invasion.survivetheinvasion.objects.Enemy;
-import game.invasion.survivetheinvasion.objects.GameOver;
+import game.invasion.survivetheinvasion.gamepanel.GameOver;
 import game.invasion.survivetheinvasion.objects.Player;
 import game.invasion.survivetheinvasion.objects.Spell;
 
@@ -30,6 +32,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private List<Spell> spellList = new ArrayList<Spell>();
     private int joystickPointerId = 0;
     private GameOver gameOver;
+    private Performance performance;
 
     public Game(Context context) {
         super(context);
@@ -39,21 +42,24 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         this.context = context;
 
-        //Initialize player
-
+        performance = new Performance(context, gameLoop);
 
         //Initialize joystick
         joystick = new Joystick(275, 1000, 70, 40);
-        player = new Player(getContext(), joystick, 400, 400, 50);
+        player = new Player(context, joystick, 400, 400, 50);
         //enemy = new Enemy(getContext(), player, 1000, 1000, 30);
 
-        gameOver = new GameOver(getContext());
+        gameOver = new GameOver(context);
 
         setFocusable(true);
     }
 
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder holder) {
+        if(gameLoop.getState().equals(Thread.State.TERMINATED)){
+
+            gameLoop = new GameLoop(this, holder);
+        }
         gameLoop.startLoop();
     }
 
@@ -70,8 +76,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-        drawUPS(canvas);
-        drawFPS(canvas);
+
         player.draw(canvas);
         joystick.draw(canvas);
 
@@ -90,23 +95,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
     }
 
-    public void drawUPS(Canvas canvas) {
-        String averageUPS = Double.toString(gameLoop.getAverageUPS());
-        Paint paint = new Paint();
-        int color = ContextCompat.getColor(context, R.color.magenta);
-        paint.setColor(color);
-        paint.setTextSize(50);
-        canvas.drawText("UPS: " + averageUPS, 100, 20, paint);
-    }
 
-    public void drawFPS(Canvas canvas) {
-        String averageFPS = Double.toString(gameLoop.getAverageFPS());
-        Paint paint = new Paint();
-        int color = ContextCompat.getColor(context, R.color.magenta);
-        paint.setColor(color);
-        paint.setTextSize(50);
-        canvas.drawText("FPS: " + averageFPS, 100, 100, paint);
-    }
 
     public void update() {
 
@@ -180,5 +169,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         return super.onFilterTouchEventForSecurity(event);
+    }
+
+    public void pause() {
+        gameLoop.stopLoop();
     }
 }

@@ -6,7 +6,8 @@ import android.graphics.Canvas;
 import androidx.core.content.ContextCompat;
 
 import game.invasion.survivetheinvasion.GameLoop;
-import game.invasion.survivetheinvasion.Joystick;
+import game.invasion.survivetheinvasion.gamepanel.HealthBar;
+import game.invasion.survivetheinvasion.gamepanel.Joystick;
 import game.invasion.survivetheinvasion.R;
 import game.invasion.survivetheinvasion.Utils;
 

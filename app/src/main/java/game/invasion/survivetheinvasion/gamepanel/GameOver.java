@@ -1,4 +1,4 @@
-package game.invasion.survivetheinvasion.objects;
+package game.invasion.survivetheinvasion.gamepanel;
 
 import android.content.Context;
 import android.graphics.Canvas;
