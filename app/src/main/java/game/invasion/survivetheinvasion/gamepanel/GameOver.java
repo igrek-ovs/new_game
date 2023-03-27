@@ -6,6 +6,7 @@ import android.graphics.Paint;
 
 import androidx.core.content.ContextCompat;
 
+import game.invasion.survivetheinvasion.GameDisplay;
 import game.invasion.survivetheinvasion.R;
 
 public class GameOver {

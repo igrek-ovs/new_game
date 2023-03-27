@@ -1,8 +1,10 @@
 package game.invasion.survivetheinvasion;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -33,6 +35,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private int joystickPointerId = 0;
     private GameOver gameOver;
     private Performance performance;
+    private GameDisplay gameDisplay;
 
     public Game(Context context) {
         super(context);
@@ -50,6 +53,11 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         //enemy = new Enemy(getContext(), player, 1000, 1000, 30);
 
         gameOver = new GameOver(context);
+
+        //Initialize game display!
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        gameDisplay = new GameDisplay(displayMetrics.widthPixels, displayMetrics.heightPixels, player);
 
         setFocusable(true);
     }
@@ -77,15 +85,15 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     public void draw(Canvas canvas) {
         super.draw(canvas);
 
-        player.draw(canvas);
+        player.draw(canvas, gameDisplay);
         joystick.draw(canvas);
 
         for (Enemy enemy : enemyList) {
-            enemy.draw(canvas);
+            enemy.draw(canvas, gameDisplay);
         }
 
         for (Spell spell : spellList) {
-            spell.draw(canvas);
+            spell.draw(canvas, gameDisplay);
         }
 
         if(player.getHealthPoints()<=0)
@@ -135,6 +143,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 }
             }
         }
+        gameDisplay.update();
     }
 
 

@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 
 import androidx.core.content.ContextCompat;
 
+import game.invasion.survivetheinvasion.GameDisplay;
 import game.invasion.survivetheinvasion.GameLoop;
 import game.invasion.survivetheinvasion.gamepanel.HealthBar;
 import game.invasion.survivetheinvasion.gamepanel.Joystick;
@@ -44,9 +45,9 @@ public class Player extends Circle {
         this.positionY = positionY;
     }
 
-    public void draw(Canvas canvas) {
-        super.draw(canvas);
-        healthBar.draw(canvas);
+    public void draw(Canvas canvas, GameDisplay gameDisplay) {
+        super.draw(canvas, gameDisplay);
+        healthBar.draw(canvas, gameDisplay);
     }
 
     public int getHealthPoints() {

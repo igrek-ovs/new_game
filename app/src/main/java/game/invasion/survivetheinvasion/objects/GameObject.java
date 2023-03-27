@@ -2,6 +2,8 @@ package game.invasion.survivetheinvasion.objects;
 
 import android.graphics.Canvas;
 
+import game.invasion.survivetheinvasion.GameDisplay;
+
 public abstract class GameObject {
     protected double positionX;
     protected double positionY;
@@ -22,7 +24,7 @@ public abstract class GameObject {
         );
     }
 
-    public abstract void draw(Canvas canvas);
+    public abstract void draw(Canvas canvas, GameDisplay gameDisplay);
 
     public abstract void update();
 
