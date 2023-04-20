@@ -1,5 +1,6 @@
 package game.invasion.survivetheinvasion.objects;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.graphics.Canvas;
 
@@ -7,10 +8,13 @@ import androidx.core.content.ContextCompat;
 
 import game.invasion.survivetheinvasion.GameDisplay;
 import game.invasion.survivetheinvasion.GameLoop;
+import game.invasion.survivetheinvasion.animations.PlayerAnimator;
 import game.invasion.survivetheinvasion.gamepanel.HealthBar;
 import game.invasion.survivetheinvasion.gamepanel.Joystick;
 import game.invasion.survivetheinvasion.R;
 import game.invasion.survivetheinvasion.Utils;
+import game.invasion.survivetheinvasion.gamepanel.PlayerState;
+import game.invasion.survivetheinvasion.graphics.Sprite;
 
 public class Player extends Circle {
     public static final double SPEED_PIXELS_PER_SECOND = 400.00;
@@ -19,12 +23,16 @@ public class Player extends Circle {
     private final Joystick joystick;
     private HealthBar healthBar;
     private int healthPoints;
+    private PlayerAnimator animator;
+    private PlayerState playerState;
 
-    public Player(Context context, Joystick joystick, double positionX, double positionY, double radius) {
+    public Player(Context context, Joystick joystick, double positionX, double positionY, double radius, PlayerAnimator animator) {
         super(context, ContextCompat.getColor(context, R.color.playerColor), positionX, positionY, radius);
         this.joystick = joystick;
         this.healthBar = new HealthBar(context, this);
         this.healthPoints = MAX_HEALTH_POINTS;
+        this.animator = animator;
+        this.playerState = new PlayerState(this);
     }
 
     public void update() {
@@ -38,6 +46,7 @@ public class Player extends Circle {
             directionX = velocityX / distance;
             directionY = velocityY / distance;
         }
+        playerState.update();
     }
 
     public void setPosition(double positionX, double positionY) {
@@ -46,7 +55,8 @@ public class Player extends Circle {
     }
 
     public void draw(Canvas canvas, GameDisplay gameDisplay) {
-        super.draw(canvas, gameDisplay);
+        animator.draw(canvas, gameDisplay, this);
+
         healthBar.draw(canvas, gameDisplay);
     }
 
@@ -57,5 +67,13 @@ public class Player extends Circle {
     public void setHealthPoints(int healthPoints) {
         if (healthPoints >= 0)
             this.healthPoints = healthPoints;
+    }
+
+    public PlayerState getPlayerState(){
+        return playerState;
+    }
+
+    public double getSpeed() {
+        return Math.sqrt(velocityX * velocityX + velocityY * velocityY);
     }
 }
