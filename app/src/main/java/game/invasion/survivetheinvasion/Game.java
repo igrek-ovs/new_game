@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import game.invasion.survivetheinvasion.animations.PlayerAnimator;
+import game.invasion.survivetheinvasion.animations.SquishiAnimator;
 import game.invasion.survivetheinvasion.gamepanel.Joystick;
 import game.invasion.survivetheinvasion.gamepanel.Performance;
 import game.invasion.survivetheinvasion.graphics.Background;
@@ -43,6 +44,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private Performance performance;
     private GameDisplay gameDisplay;
     private Background bg;
+    private  SquishiAnimator squishiAnimator;
 
     public Game(Context context) {
         super(context);
@@ -61,7 +63,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         SpriteSheet spriteSheet = new SpriteSheet(context);
 
         PlayerAnimator playerAnimator = new PlayerAnimator(spriteSheet.getPlayerSpriteArrayLeft(), spriteSheet.getPlayerSpriteArrayRight());
-
+        squishiAnimator = new SquishiAnimator(spriteSheet.getSquishiSpriteArrayLeft(), spriteSheet.getSquishiSpriteArrayRight());
         player = new Player(context, joystick, 400, 400, 50, playerAnimator);
         //enemy = new Enemy(getContext(), player, 1000, 1000, 30);
 
@@ -134,7 +136,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         player.update();
 
         if (Enemy.readyToSpawn()) {
-            enemyList.add(new Enemy(getContext(), player));
+            enemyList.add(new Enemy(getContext(), player, Math.random() * 2000, Math.random() * 2000, 30, squishiAnimator));
         }
 
         for (Enemy enemy : enemyList) {

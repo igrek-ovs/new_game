@@ -1,6 +1,5 @@
 package game.invasion.survivetheinvasion.objects;
 
-import android.animation.Animator;
 import android.content.Context;
 import android.graphics.Canvas;
 
@@ -13,8 +12,7 @@ import game.invasion.survivetheinvasion.gamepanel.HealthBar;
 import game.invasion.survivetheinvasion.gamepanel.Joystick;
 import game.invasion.survivetheinvasion.R;
 import game.invasion.survivetheinvasion.Utils;
-import game.invasion.survivetheinvasion.gamepanel.PlayerState;
-import game.invasion.survivetheinvasion.graphics.Sprite;
+import game.invasion.survivetheinvasion.states.PlayerState;
 
 public class Player extends Circle {
     public static final double SPEED_PIXELS_PER_SECOND = 400.00;

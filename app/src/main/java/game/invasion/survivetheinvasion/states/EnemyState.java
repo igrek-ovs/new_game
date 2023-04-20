@@ -1,8 +1,8 @@
-package game.invasion.survivetheinvasion.gamepanel;
+package game.invasion.survivetheinvasion.states;
 
-import game.invasion.survivetheinvasion.objects.Player;
+import game.invasion.survivetheinvasion.objects.Enemy;
 
-public class PlayerState {
+public class EnemyState {
     public enum State {
         NOT_MOVING,
         STARTED_MOVING_LEFT,
@@ -11,11 +11,11 @@ public class PlayerState {
         IS_MOVING_RIGHT
     }
 
-    private Player player;
+    private Enemy enemy;
     private State state;
 
-    public PlayerState(Player player) {
-        this.player = player;
+    public EnemyState(Enemy enemy) {
+        this.enemy = enemy;
         this.state = State.NOT_MOVING;
     }
 
@@ -27,8 +27,8 @@ public class PlayerState {
     public void update() {
         switch (state) {
             case NOT_MOVING:
-                if (player.velocityX != 0 || player.velocityY != 0) {
-                    if (player.getDirectionX() > 0) {
+                if (enemy.velocityX != 0 || enemy.velocityY != 0) {
+                    if (enemy.getDirectionX() > 0) {
                         state = State.STARTED_MOVING_RIGHT;
                     } else {
                         state = State.STARTED_MOVING_LEFT;
@@ -36,8 +36,8 @@ public class PlayerState {
                 }
                 break;
             case STARTED_MOVING_LEFT:
-                if (player.velocityX != 0 || player.velocityY != 0) {
-                    if (player.getDirectionX() < 0) {
+                if (enemy.velocityX != 0 || enemy.velocityY != 0) {
+                    if (enemy.getDirectionX() < 0) {
                         state = State.IS_MOVING_LEFT;
                     }
                 } else {
@@ -45,8 +45,8 @@ public class PlayerState {
                 }
                 break;
             case STARTED_MOVING_RIGHT:
-                if (player.velocityX != 0 || player.velocityY != 0) {
-                    if (player.getDirectionX() > 0) {
+                if (enemy.velocityX != 0 || enemy.velocityY != 0) {
+                    if (enemy.getDirectionX() > 0) {
                         state = State.IS_MOVING_RIGHT;
                     }
                 } else {
@@ -54,16 +54,16 @@ public class PlayerState {
                 }
                 break;
             case IS_MOVING_LEFT:
-                if (player.velocityX == 0 && player.velocityY == 0) {
+                if (enemy.velocityX == 0 && enemy.velocityY == 0) {
                     state = State.NOT_MOVING;
-                } else if (player.getDirectionX() > 0) {
+                } else if (enemy.getDirectionX() > 0) {
                     state = State.STARTED_MOVING_RIGHT;
                 }
                 break;
             case IS_MOVING_RIGHT:
-                if (player.velocityX == 0 && player.velocityY == 0) {
+                if (enemy.velocityX == 0 && enemy.velocityY == 0) {
                     state = State.NOT_MOVING;
-                } else if (player.getDirectionX() < 0) {
+                } else if (enemy.getDirectionX() < 0) {
                     state = State.STARTED_MOVING_LEFT;
                 }
                 break;

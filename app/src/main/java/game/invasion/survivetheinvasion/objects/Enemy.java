@@ -1,11 +1,17 @@
 package game.invasion.survivetheinvasion.objects;
 
 import android.content.Context;
+import android.graphics.Canvas;
 
 import androidx.core.content.ContextCompat;
 
+import game.invasion.survivetheinvasion.GameDisplay;
 import game.invasion.survivetheinvasion.GameLoop;
 import game.invasion.survivetheinvasion.R;
+import game.invasion.survivetheinvasion.animations.PlayerAnimator;
+import game.invasion.survivetheinvasion.animations.SquishiAnimator;
+import game.invasion.survivetheinvasion.states.EnemyState;
+import game.invasion.survivetheinvasion.states.PlayerState;
 
 public class Enemy extends Circle {
 
@@ -15,12 +21,16 @@ public class Enemy extends Circle {
     private static final double SPAWNS_PER_SECOND = SPAWNS_PER_MINUTE/60;
     private static final double UPDATES_PER_SPAWN = GameLoop.MAX_UPS/SPAWNS_PER_SECOND;
     private static double updatesUntilNextSpawn = UPDATES_PER_SPAWN;
+    private SquishiAnimator animator;
+    private EnemyState enemyState;
 
     private final Player player;
 
-    public Enemy(Context context, Player player, double positionX, double positionY, double radius) {
+    public Enemy(Context context, Player player, double positionX, double positionY, double radius, SquishiAnimator animator) {
         super(context, ContextCompat.getColor(context, R.color.enemyColor), positionX, positionY, radius);
         this.player = player;
+        this.animator = animator;
+        this.enemyState = new EnemyState(this);
     }
 
     public Enemy(Context context, Player player) {
@@ -36,6 +46,10 @@ public class Enemy extends Circle {
             updatesUntilNextSpawn--;
             return false;
         }
+    }
+
+    public void draw(Canvas canvas, GameDisplay gameDisplay){
+        animator.draw(canvas, gameDisplay, this);
     }
 
     @Override
@@ -57,5 +71,9 @@ public class Enemy extends Circle {
 
         positionX += velocityX;
         positionY += velocityY;
+    }
+
+    public EnemyState getEnemyState(){
+        return enemyState;
     }
 }
