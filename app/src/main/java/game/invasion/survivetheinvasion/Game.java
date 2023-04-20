@@ -60,7 +60,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         joystick = new Joystick(275, 1000, 70, 40);
         SpriteSheet spriteSheet = new SpriteSheet(context);
 
-        PlayerAnimator playerAnimator = new PlayerAnimator(spriteSheet.getPlayerSpriteArray());
+        PlayerAnimator playerAnimator = new PlayerAnimator(spriteSheet.getPlayerSpriteArrayLeft(), spriteSheet.getPlayerSpriteArrayRight());
 
         player = new Player(context, joystick, 400, 400, 50, playerAnimator);
         //enemy = new Enemy(getContext(), player, 1000, 1000, 30);

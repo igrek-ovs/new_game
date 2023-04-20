@@ -9,30 +9,44 @@ import game.invasion.survivetheinvasion.objects.Player;
 
 public class PlayerAnimator {
     private static final int MAX_UPDATES_BEFORE_NEXT_MOVE_FRAME = 5;
-    private Sprite[] playerSpriteArray;
+    private Sprite[] playerSpriteArrayLeft;
+    private Sprite[] playerSpriteArrayRight;
     private int updatesBeforeNextFrame;
     private int idxMovingFrame = 0;
 
-    public PlayerAnimator(Sprite[] playerSpriteArray) {
-        this.playerSpriteArray = playerSpriteArray;
+    public PlayerAnimator(Sprite[] playerSpriteArrayLeft,Sprite[] playerSpriteArrayRight ) {
+        this.playerSpriteArrayLeft = playerSpriteArrayLeft;
+        this.playerSpriteArrayRight = playerSpriteArrayRight;
     }
 
     public void draw(Canvas canvas, GameDisplay gameDisplay, Player player) {
         switch (player.getPlayerState().getState()) {
             case NOT_MOVING:
-                drawFrame(canvas, gameDisplay, player, playerSpriteArray[2]);
+                drawFrame(canvas, gameDisplay, player, playerSpriteArrayRight[0]);
                 break;
-            case STARTED_MOVING:
+            case STARTED_MOVING_LEFT:
                 updatesBeforeNextFrame = 5;
-                drawFrame(canvas, gameDisplay, player, playerSpriteArray[idxMovingFrame]);
+                drawFrame(canvas, gameDisplay, player, playerSpriteArrayLeft[idxMovingFrame]);
                 break;
-            case IS_MOVING:
+            case STARTED_MOVING_RIGHT:
+                updatesBeforeNextFrame = 5;
+                drawFrame(canvas, gameDisplay, player, playerSpriteArrayRight[idxMovingFrame]);
+                break;
+            case IS_MOVING_LEFT:
                 updatesBeforeNextFrame--;
                 if (updatesBeforeNextFrame == 0) {
                     updatesBeforeNextFrame = MAX_UPDATES_BEFORE_NEXT_MOVE_FRAME;
                     toggleMovingFrame();
                 }
-                drawFrame(canvas, gameDisplay, player, playerSpriteArray[idxMovingFrame]);
+                drawFrame(canvas, gameDisplay, player, playerSpriteArrayLeft[idxMovingFrame]);
+                break;
+            case IS_MOVING_RIGHT:
+                updatesBeforeNextFrame--;
+                if (updatesBeforeNextFrame == 0) {
+                    updatesBeforeNextFrame = MAX_UPDATES_BEFORE_NEXT_MOVE_FRAME;
+                    toggleMovingFrame();
+                }
+                drawFrame(canvas, gameDisplay, player, playerSpriteArrayRight[idxMovingFrame]);
                 break;
             default:
                 break;
@@ -40,8 +54,8 @@ public class PlayerAnimator {
     }
 
     private void toggleMovingFrame() {
-        if(idxMovingFrame==0)
-            idxMovingFrame =1;
+        if(idxMovingFrame!=7)
+            idxMovingFrame++;
         else{
             idxMovingFrame = 0;
         }
