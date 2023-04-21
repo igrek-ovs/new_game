@@ -64,8 +64,8 @@ public class SquishiAnimator {
 
     public void drawFrame(Canvas canvas, GameDisplay gameDisplay, Enemy enemy, Sprite sprite) {
         sprite.draw(canvas,
-                (int) gameDisplay.gameToDisplayCoordinatesX(enemy.getPositionX()) - 66,
-                (int) gameDisplay.gameToDisplayCoordinatesY(enemy.getPositionY()) - 64
+                (int) gameDisplay.gameToDisplayCoordinatesX(enemy.getPositionX()) - 48,
+                (int) gameDisplay.gameToDisplayCoordinatesY(enemy.getPositionY()) - 60
         );
     }
 }

@@ -11,7 +11,7 @@ import game.invasion.survivetheinvasion.Utils;
 
 public class Spell extends Circle {
 
-    private static final double SPEED_PIXELS_PER_SECOND = Player.SPEED_PIXELS_PER_SECOND * 0.6;
+    private static final double SPEED_PIXELS_PER_SECOND = Player.SPEED_PIXELS_PER_SECOND * 1.5;
     private static final double MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
 
     public Spell(Context context, Player spellcaster) {

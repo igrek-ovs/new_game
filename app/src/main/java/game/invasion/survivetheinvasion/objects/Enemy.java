@@ -58,10 +58,13 @@ public class Enemy extends Circle {
         double distanceToPlayerY = player.getPositionY() - this.positionY;
         double distanceToPlayer = GameObject.getDistanceBetweenObjects(this, player);
 
-        double directionX = distanceToPlayerX/distanceToPlayer;
-        double directionY = distanceToPlayerY/distanceToPlayer;
+        /*double directionX = distanceToPlayerX/distanceToPlayer;
+        double directionY = distanceToPlayerY/distanceToPlayer;*/
 
         if(distanceToPlayer>0){
+            directionX = distanceToPlayerX / distanceToPlayer;
+            directionY = distanceToPlayerY / distanceToPlayer;
+
             velocityX = directionX * MAX_SPEED;
             velocityY = directionY * MAX_SPEED;
         } else {
@@ -71,6 +74,7 @@ public class Enemy extends Circle {
 
         positionX += velocityX;
         positionY += velocityY;
+        enemyState.update();
     }
 
     public EnemyState getEnemyState(){
